@@ -1,7 +1,8 @@
 # DigitalOcean-Droplet-SDK
 
 [![Build Status](https://travis-ci.org/GeekyAubergine/digitalocean-droplet-sdk.svg?branch=develop)](https://travis-ci.org/GeekyAubergine/digitalocean-droplet-sdk)
-[![Coverage Status](https://coveralls.io/repos/github/GeekyAubergine/digitalocean-droplet-sdk/badge.svg?branch=develop)](https://coveralls.io/github/GeekyAubergine/digitalocean-droplet-sdk?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/GeekyAubergine/digitalocean-droplet-sdk/badge.svg)](https://coveralls.io/github/GeekyAubergine/digitalocean-droplet-sdk)
+[![Known Vulnerabilities](https://snyk.io/test/github/geekyaubergine/digitalocean-droplet-sdk/badge.svg)](https://snyk.io/test/github/geekyaubergine/digitalocean-droplet-sdk)
 
 A simple interface to get metadata about a DigitalOcean Droplet.
 
