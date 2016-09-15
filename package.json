@@ -1,0 +1,30 @@
+{
+  "name": "digitalocean-droplet-sdk",
+  "version": "1.0.0",
+  "description": "A NodeJS wrapper for the DigitalOcean Droplet API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeekyAubergine/digitalocean-droplet-sdk.git"
+  },
+  "keywords": [
+    "digitalocean",
+    "digital",
+    "ocean",
+    "droplet",
+    "sdk",
+    "api"
+  ],
+  "author": "Chris Aubert | GeekyAubergine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GeekyAubergine/digitalocean-droplet-sdk/issues"
+  },
+  "homepage": "https://github.com/GeekyAubergine/digitalocean-droplet-sdk#readme",
+  "dependencies": {
+    "request": "^2.74.0"
+  }
+}
