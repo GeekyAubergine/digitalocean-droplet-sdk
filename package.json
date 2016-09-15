@@ -26,5 +26,10 @@
   "homepage": "https://github.com/GeekyAubergine/digitalocean-droplet-sdk#readme",
   "dependencies": {
     "request": "^2.74.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "mocha": "^3.0.2"
   }
 }
