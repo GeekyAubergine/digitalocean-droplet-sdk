@@ -60,11 +60,14 @@ var server = http.createServer(function(req, res) {
 });
 
 describe('#droplet-api-reject', function() {
-	it('should reject as no api available', function() {
+	it('should reject getMetadata as no api available', function() {
 		return dropletSDK.getMetadata().should.be.rejected;
 	});
-});
 
+	it('should reject getName as no api available', function() {
+		return dropletSDK.getName().should.be.rejected;
+	});
+});
 describe('#droplet-api', function() {
 	before(function() {
 		process.env.HOST = '127.0.0.1';
