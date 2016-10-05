@@ -42,7 +42,8 @@ var exampleDroplet = {
 	},
 	"floating_ip": {
 		"ipv4": {
-			"active": false
+			"active": true,
+			"address": '127.0.0.1',
 		}
 	},
 	"dns":{
