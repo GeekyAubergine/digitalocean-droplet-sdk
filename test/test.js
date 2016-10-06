@@ -1,9 +1,10 @@
-var http = require('http'),
-    chai = require('chai'),
+var chai = require('chai'),
     should = chai.should(), // eslint-disable-line no-unused-vars
     dropletSDK = require('../index'),
-    chaiAsPromised = require('chai-as-promised');
- 
+    chaiAsPromised = require('chai-as-promised'),
+	mockery = require('mockery'),
+	sinon = require('sinon');
+
 chai.use(chaiAsPromised);
 
 var exampleDroplet = {
@@ -69,10 +70,6 @@ var exampleDroplet = {
 	},
 };
 
-var server = http.createServer(function(req, res) {       
-	res.end(JSON.stringify(exampleDroplet));
-});
-
 describe('#droplet-api-reject', function() {
 	it('should reject getMetadata as no api available', function() {
 		return dropletSDK.getMetadata().should.be.rejected;
@@ -82,15 +79,25 @@ describe('#droplet-api-reject', function() {
 		return dropletSDK.getName().should.be.rejected;
 	});
 });
+
 describe('#droplet-api', function() {
 	before(function() {
-		process.env.HOST = '127.0.0.1';
-		process.env.PORT = '7997';
-		server.listen(7997, '127.0.0.1');
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(exampleDroplet));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
 	});
 
 	after(function() {
-		server.close();
+		mockery.disable();
 	});
 
 	it('gets metadata', function() {
@@ -148,6 +155,28 @@ describe('#droplet-api', function() {
 
 	it('gets floating ip', function() {
 		return dropletSDK.getFloatingIP().should.eventually.equal(exampleDroplet.floating_ip.ipv4.ip_address);
+	});
+});
+
+describe('#droplet-api-with-no-floating-ip', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		exampleDroplet.floating_ip.ipv4.active = false;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(exampleDroplet));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
 	});
 
 	it('returns empty string for floating ip if not active', function() {
