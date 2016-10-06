@@ -42,11 +42,11 @@ dropletSDK.getPrivateIP4Addresses().then(function(ipAddresses) {
 | getName() | Returns the hostname/name of the droplet |
 | getPublicKeys | List of public ssh keys that have been added to the droplet |
 | getRegion() | Returns the region of the droplet |
-| getInterfaces() | Returns an array of both the public and private interface objects (see below) |
+| getInterfaces() | Returns both the public and private interfaces for the droplet. This is in the form of an object with two values; 'public' and 'private' which in turn contain arrays of respective interfaces (see format below) |
 | getPrivateInterfaces() | Returns an array of the private interfaces for the droplet (see format below) |
 | getPrivateIP4Addresses() | Returns an array of the private ipv4 addresses as strings |
 | getPrivateIP6Addresses() | Returns an array of the private ipv6 addresses as strings |
-| getPublicInterfaces() | Returns an array of public interface objects (see below) |
+| getPublicInterfaces() | Returns an array of the public interfaces for the droplet (see format below) |
 | getPublicIP4Addresses() | Returns an array of the public ipv4 addresses as strings |
 | getPublicIP6Addresses() | Returns an array of the public ipv6 addresses as strings |
 | hasFloatingIP() | Returns whether or not the droplet has a floating ip |
