@@ -42,6 +42,8 @@
     "eslint-plugin-react": "^6.3.0",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "mockery": "^1.7.0",
+    "sinon": "^1.17.6"
   }
 }

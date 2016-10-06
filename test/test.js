@@ -1,13 +1,14 @@
-var http = require('http'),
-    chai = require('chai'),
+var chai = require('chai'),
     should = chai.should(), // eslint-disable-line no-unused-vars
     dropletSDK = require('../index'),
-    chaiAsPromised = require('chai-as-promised');
- 
+    chaiAsPromised = require('chai-as-promised'),
+	mockery = require('mockery'),
+	sinon = require('sinon');
+
 chai.use(chaiAsPromised);
 
 var exampleDroplet = {
-	'droplet_id':2756294,
+	'droplet_id': 2756294,
 	'hostname':'sample-droplet',
 	'vendor_data':'#cloud-config\ndisable_root: false\nmanage_etc_hosts: true\n\ncloud_config_modules:\n - ssh\n - set_hostname\n - [ update_etc_hosts, once-per-instance ]\n\ncloud_final_modules:\n - scripts-vendor\n - scripts-per-once\n - scripts-per-boot\n - scripts-per-instance\n - scripts-user\n',
 	'public_keys':['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcbi6cygCUmuNlB0KqzBpHXf7CFYb3VE4pDOf/RLJ8OFDjOM+fjF83a24QktSVIpQnHYpJJT2pQMBxD+ZmnhTbKv+OjwHSHwAfkBullAojgZKzz+oN35P4Ea4J78AvMrHw0zp5MknS+WKEDCA2c6iDRCq6/hZ13Mn64f6c372JK99X29lj/B4VQpKCQyG8PUSTFkb5DXTETGbzuiVft+vM6SF+0XZH9J6dQ7b4yD3sOder+M0Q7I7CJD4VpdVD/JFa2ycOS4A4dZhjKXzabLQXdkWHvYGgNPGA5lI73TcLUAueUYqdq3RrDRfaQ5Z0PEw0mDllCzhk5dQpkmmqNi0F sammy@digitalocean.com'],
@@ -69,10 +70,6 @@ var exampleDroplet = {
 	},
 };
 
-var server = http.createServer(function(req, res) {       
-	res.end(JSON.stringify(exampleDroplet));
-});
-
 describe('#droplet-api-reject', function() {
 	it('should reject getMetadata as no api available', function() {
 		return dropletSDK.getMetadata().should.be.rejected;
@@ -82,15 +79,25 @@ describe('#droplet-api-reject', function() {
 		return dropletSDK.getName().should.be.rejected;
 	});
 });
+
 describe('#droplet-api', function() {
 	before(function() {
-		process.env.HOST = '127.0.0.1';
-		process.env.PORT = '7997';
-		server.listen(7997, '127.0.0.1');
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(exampleDroplet));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
 	});
 
 	after(function() {
-		server.close();
+		mockery.disable();
 	});
 
 	it('gets metadata', function() {
@@ -148,6 +155,28 @@ describe('#droplet-api', function() {
 
 	it('gets floating ip', function() {
 		return dropletSDK.getFloatingIP().should.eventually.equal(exampleDroplet.floating_ip.ipv4.ip_address);
+	});
+});
+
+describe('#droplet-api-with-no-floating-ip', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		exampleDroplet.floating_ip.ipv4.active = false;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(exampleDroplet));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
 	});
 
 	it('returns empty string for floating ip if not active', function() {
