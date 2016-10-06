@@ -22,6 +22,19 @@ var exampleDroplet = {
 				},
 				"mac":"04:01:2a:0f:2a:02",
 				"type":"private"
+			}, {
+				"ipv4":{
+					"ip_address":"10.132.255.114",
+					"netmask":"255.255.0.0",
+					"gateway":"10.132.0.1"
+				},
+				"ipv6":{
+					"ip_address":"2604:A880:0800:0010:0000:0000:017D:2001",
+					"cidr":64,
+					"gateway":"2604:A880:0800:0010:0000:0000:0000:0001"
+				},
+				"mac":"04:01:2a:0f:2a:02",
+				"type":"private"
 			}
 		],
 		"public":[
@@ -43,7 +56,7 @@ var exampleDroplet = {
 	"floating_ip": {
 		"ipv4": {
 			"active": true,
-			"address": '127.0.0.1',
+			"ip_address": '127.0.0.1',
 		}
 	},
 	"dns":{
@@ -80,6 +93,23 @@ describe('#droplet-api', function() {
 	});
 
 	it('gets metadata', function() {
-		return dropletSDK.getMetadata().should.eventually.equal(JSON.stringify(exampleDroplet));
+		return dropletSDK.getMetadata().should.eventually.deep.equal(exampleDroplet);
 	});
+
+	it('gets hostname', function() {
+		return dropletSDK.getHostName().should.eventually.equal(exampleDroplet.hostname);
+	});
+
+	it('gets name', function() {
+		return dropletSDK.getName().should.eventually.equal(exampleDroplet.hostname);
+	});
+
+	it('gets public keys', function() {
+		return dropletSDK.getPublicKeys().should.eventually.deep.equal(exampleDroplet.public_keys);
+	});
+
+	it('gets region', function() {
+		return dropletSDK.getRegion().should.eventually.equal(exampleDroplet.region);
+	});
+
 });
