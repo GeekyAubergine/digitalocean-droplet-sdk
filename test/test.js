@@ -112,4 +112,45 @@ describe('#droplet-api', function() {
 		return dropletSDK.getRegion().should.eventually.equal(exampleDroplet.region);
 	});
 
+	it('gets interfaces', function() {
+		return dropletSDK.getInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces);
+	});
+
+	it('gets private interfaces', function() {
+		return dropletSDK.getPrivateInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces.private);
+	});
+
+	it('gets private IP4 address', function() {
+		return dropletSDK.getPrivateIP4Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[0].ipv4.ip_address,
+			exampleDroplet.interfaces.private[1].ipv4.ip_address])
+	});
+
+	it('gets private IP6 address', function() {
+		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[1].ipv6.ip_address]);
+	});
+
+	it('gets public interfaces', function() {
+		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces.public);
+	});
+
+	it('gets public IP4 address', function() {
+		return dropletSDK.getPublicIP4Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.public[0].ipv4.ip_address]);
+	});
+
+	it('gets public IP6 address', function() {
+		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.public[0].ipv6.ip_address])
+	});
+
+	it('determines if has floating ip', function() {
+		return dropletSDK.hasFloatingIP().should.eventually.equal(exampleDroplet.floating_ip.ipv4.active);
+	});
+
+	it('gets floating ip', function() {
+		return dropletSDK.getFloatingIP().should.eventually.equal(exampleDroplet.floating_ip.ipv4.ip_address);
+	});
+
+	it('returns empty string for floating ip if not active', function() {
+		exampleDroplet.floating_ip.ipv4.active = false;
+		return dropletSDK.getFloatingIP().should.eventually.equal('');
+	});
 });
