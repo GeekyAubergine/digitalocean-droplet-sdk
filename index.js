@@ -27,7 +27,7 @@ var getID = function() {
 	return defaultPromise(function(data) {
 		return data.droplet_id;
 	});
-}
+};
 
 var getHostName = function() {
 	return defaultPromise(function(data) {
@@ -39,7 +39,7 @@ var getVendorData = function() {
 	return defaultPromise(function(data) {
 		return data.vendor_data || '';
 	});
-}
+};
 
 var getPublicKeys = function() {
 	return defaultPromise(function(data) {
@@ -163,6 +163,15 @@ var getFloatingIP = function() {
 	});
 };
 
+var getNameServers = function() {
+	return defaultPromise(function(data) {
+		if (!data.dns || !data.dns.nameservers) {
+			return [];
+		}
+		return data.dns.nameservers;
+	});
+};
+
 module.exports = {
 	getMetadata: getMetadata,
 	getID: getID,
@@ -182,5 +191,7 @@ module.exports = {
 	getPublicIP6Addresses: getPublicIP6Addresses,
 	getPublicMacAddresses: getPublicMacAddresses,
 	hasFloatingIP: hasFloatingIP,
-	getFloatingIP: getFloatingIP
+	getFloatingIP: getFloatingIP,
+	getDNS: getNameServers,
+	getNameServers: getNameServers,
 };

@@ -178,6 +178,14 @@ describe('#droplet-api-standard', function() {
 	it('gets floating ip', function() {
 		return dropletSDK.getFloatingIP().should.eventually.equal(exampleDroplet.floating_ip.ipv4.ip_address);
 	});
+
+	it('gets dns', function() {
+		return dropletSDK.getDNS().should.eventually.deep.equal(exampleDroplet.dns.nameservers);
+	});
+
+	it('gets name servers', function() {
+		return dropletSDK.getNameServers().should.eventually.deep.equal(exampleDroplet.dns.nameservers);
+	});
 });
 
 describe('#droplet-api-with-no-vendor-data', function() {
@@ -389,3 +397,64 @@ describe('#droplet-api-with-no-floating-ip', function() {
 	});
 });
 
+describe('#droplet-api-with-no-dns', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.dns;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets dns', function() {
+		return dropletSDK.getDNS().should.eventually.deep.equal([]);
+	});
+
+	it('gets name servers', function() {
+		return dropletSDK.getNameServers().should.eventually.deep.equal([]);
+	});
+});
+
+describe('#droplet-api-with-no-name-servers', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.dns.nameservers;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets dns', function() {
+		return dropletSDK.getDNS().should.eventually.deep.equal([]);
+	});
+
+	it('gets name servers', function() {
+		return dropletSDK.getNameServers().should.eventually.deep.equal([]);
+	});
+});
