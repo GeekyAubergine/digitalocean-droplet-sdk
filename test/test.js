@@ -167,8 +167,9 @@ describe('#droplet-api-with-no-floating-ip', function() {
 			useCleanCache: true,
 		});
 
-		exampleDroplet.floating_ip.ipv4.active = false;
-		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(exampleDroplet));
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.floating_ip.ipv4.ip_address;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
 
 		mockery.registerMock('request', requestStub);
 
@@ -181,7 +182,113 @@ describe('#droplet-api-with-no-floating-ip', function() {
 	});
 
 	it('returns empty string for floating ip if not active', function() {
-		exampleDroplet.floating_ip.ipv4.active = false;
 		return dropletSDK.getFloatingIP().should.eventually.equal('');
+	});
+});
+
+describe('#droplet-api-with-no-private-interfaces', function() {
+	var dropletCopy;
+
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.interfaces.private;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets interfaces', function() {
+		return dropletSDK.getInterfaces().should.eventually.deep.equal(dropletCopy.interfaces);
+	});
+
+	it('gets private interfaces', function() {
+		return dropletSDK.getPrivateInterfaces().should.eventually.deep.equal([]);
+	});
+
+	it('gets private IP4 address', function() {
+		return dropletSDK.getPrivateIP4Addresses().should.eventually.deep.equal([]);
+	});
+
+	it('gets private IP6 address', function() {
+		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([]);
+	});
+
+	it('gets public interfaces', function() {
+		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal(dropletCopy.interfaces.public);
+	});
+
+	it('gets public IP4 address', function() {
+		return dropletSDK.getPublicIP4Addresses().should.eventually.deep.equal([dropletCopy.interfaces.public[0].ipv4.ip_address]);
+	});
+
+	it('gets public IP6 address', function() {
+		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([dropletCopy.interfaces.public[0].ipv6.ip_address]);
+	});
+});
+
+describe('#droplet-api-with-no-public-interfaces', function() {
+	var dropletCopy;
+
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.interfaces.public;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets interfaces', function() {
+		return dropletSDK.getInterfaces().should.eventually.deep.equal(dropletCopy.interfaces);
+	});
+	
+	it('gets private interfaces', function() {
+		return dropletSDK.getPrivateInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces.private);
+	});
+
+	it('gets private IP4 address', function() {
+		return dropletSDK.getPrivateIP4Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[0].ipv4.ip_address,
+			exampleDroplet.interfaces.private[1].ipv4.ip_address]);
+	});
+
+	it('gets private IP6 address', function() {
+		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[1].ipv6.ip_address]);
+	});
+
+	it('gets public interfaces', function() {
+		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal([]);
+	});
+
+	it('gets public IP4 address', function() {
+		return dropletSDK.getPublicIP4Addresses().should.eventually.deep.equal([]);
+	});
+
+	it('gets public IP6 address', function() {
+		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([]);
 	});
 });
