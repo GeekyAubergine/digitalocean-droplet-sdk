@@ -21,6 +21,12 @@ var defaultPromise = function(transformer) {
 			reject(error);
 		});
 	});
+};
+
+var getID = function() {
+	return defaultPromise(function(data) {
+		return data.droplet_id;
+	});
 }
 
 var getHostName = function() {
@@ -28,6 +34,12 @@ var getHostName = function() {
 		return data.hostname;
 	});
 };
+
+var getVendorData = function() {
+	return defaultPromise(function(data) {
+		return data.vendor_data || '';
+	});
+}
 
 var getPublicKeys = function() {
 	return defaultPromise(function(data) {
