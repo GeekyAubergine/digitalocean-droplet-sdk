@@ -81,7 +81,7 @@ describe('#droplet-api-reject', function() {
 	});
 });
 
-describe('#droplet-api', function() {
+describe('#droplet-api-standard', function() {
 	before(function() {
 		mockery.enable({
 			warnOnReplace: false,
@@ -103,6 +103,18 @@ describe('#droplet-api', function() {
 
 	it('gets metadata', function() {
 		return dropletSDK.getMetadata().should.eventually.deep.equal(exampleDroplet);
+	});
+
+	it('gets id', function() {
+		return dropletSDK.getID().should.eventually.equal(exampleDroplet.droplet_id);
+	});
+
+	it('gets vendor data', function() {
+		return dropletSDK.getVendorData().should.eventually.equal(exampleDroplet.vendor_data);
+	});
+
+	it('gets auth key', function() {
+		return dropletSDK.getAuthKey().should.eventually.equal(exampleDroplet.auth_key);
 	});
 
 	it('gets hostname', function() {
@@ -159,7 +171,9 @@ describe('#droplet-api', function() {
 	});
 });
 
-describe('#droplet-api-with-no-floating-ip', function() {
+describe('#droplet-api-with-no-vendor-data', function() {
+	var dropletCopy;
+
 	before(function() {
 		mockery.enable({
 			warnOnReplace: false,
@@ -167,8 +181,8 @@ describe('#droplet-api-with-no-floating-ip', function() {
 			useCleanCache: true,
 		});
 
-		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
-		delete dropletCopy.floating_ip.ipv4.ip_address;
+		dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.vendor_data;
 		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
 
 		mockery.registerMock('request', requestStub);
@@ -181,8 +195,37 @@ describe('#droplet-api-with-no-floating-ip', function() {
 		mockery.disable();
 	});
 
-	it('returns empty string for floating ip if not active', function() {
-		return dropletSDK.getFloatingIP().should.eventually.equal('');
+	it('gets vendor data', function() {
+		return dropletSDK.getVendorData().should.eventually.equal('');
+	});
+});
+
+describe('#droplet-api-with-no-auth-key', function() {
+	var dropletCopy;
+
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.auth_key;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets vendor data', function() {
+		return dropletSDK.getAuthKey().should.eventually.equal('');
 	});
 });
 
@@ -266,7 +309,7 @@ describe('#droplet-api-with-no-public-interfaces', function() {
 	it('gets interfaces', function() {
 		return dropletSDK.getInterfaces().should.eventually.deep.equal(dropletCopy.interfaces);
 	});
-	
+
 	it('gets private interfaces', function() {
 		return dropletSDK.getPrivateInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces.private);
 	});
@@ -292,3 +335,31 @@ describe('#droplet-api-with-no-public-interfaces', function() {
 		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([]);
 	});
 });
+
+describe('#droplet-api-with-no-floating-ip', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.floating_ip.ipv4.ip_address;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('returns empty string for floating ip if not active', function() {
+		return dropletSDK.getFloatingIP().should.eventually.equal('');
+	});
+});
+

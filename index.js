@@ -2,7 +2,7 @@ var request = require('request');
 
 var getMetadata = function() {
 	return new Promise(function(resolve, reject) {
-		request('http://169.254.169.254/metadata/v1.json', {timeout: 1500}, function(error, response, body) {
+		request('http://169.254.169.254/metadata/v1.json', {timeout: 100}, function(error, response, body) {
 			if (!error && response.statusCode === 200) {
 				resolve(JSON.parse(body));
 			}
@@ -143,6 +143,9 @@ var getFloatingIP = function() {
 
 module.exports = {
 	getMetadata: getMetadata,
+	getID: getID,
+	getVendorData: getVendorData,
+	getAuthKey: getAuthKey,
 	getHostName: getHostName,
 	getName: getHostName,
 	getPublicKeys: getPublicKeys,
