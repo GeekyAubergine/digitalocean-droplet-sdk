@@ -67,12 +67,15 @@ var getInterfaces = function() {
 
 var getPrivateInterfaces = function() {
 	return defaultPromise(function(data) {
-		return data.interfaces.private;
+		return data.interfaces.private || [];
 	});
 };
 
 var getPrivateIP4Addresses = function() {
 	return defaultPromise(function(data) {
+		if (!data.interfaces.private) {
+			return [];
+		}
 		return data.interfaces.private.filter(function(x) {
 			return x.ipv4;
 		}).map(function(x) {
@@ -83,6 +86,9 @@ var getPrivateIP4Addresses = function() {
 
 var getPrivateIP6Addresses = function() {
 	return defaultPromise(function(data) {
+		if (!data.interfaces.private) {
+			return [];
+		}
 		return data.interfaces.private.filter(function(x) {
 			return x.ipv6;
 		}).map(function(x) {
@@ -93,12 +99,15 @@ var getPrivateIP6Addresses = function() {
 
 var getPublicInterfaces = function() {
 	return defaultPromise(function(data) {
-		return data.interfaces.public;
+		return data.interfaces.public || [];
 	});
 };
 
 var getPublicIP4Addresses = function() {
 	return defaultPromise(function(data) {
+		if (!data.interfaces.public) {
+			return [];
+		}
 		return data.interfaces.public.filter(function(x) {
 			return x.ipv4;
 		}).map(function(x) {
@@ -109,6 +118,9 @@ var getPublicIP4Addresses = function() {
 
 var getPublicIP6Addresses = function() {
 	return defaultPromise(function(data) {
+		if (!data.interfaces.public) {
+			return [];
+		}
 		return data.interfaces.public.filter(function(x) {
 			return x.ipv6;
 		}).map(function(x) {
@@ -125,8 +137,7 @@ var hasFloatingIP = function() {
 
 var getFloatingIP = function() {
 	return defaultPromise(function(data) {
-		return data.floating_ip.ipv4.active ?
-			data.floating_ip.ipv4.ip_address : '';
+		return data.floating_ip.ipv4.ip_address || '';
 	});
 };
 
