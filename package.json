@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "make test",
-    "test-coverage": "istanbul cover node_modules/mocha/bin/_mocha && istanbul-coveralls",
-    "show-coverage": "istanbul cover node_modules/mocha/bin/_mocha && open coverage/lcov-report/index.html"
+    "test-coverage": "istanbul cover node_modules/mocha/bin/_mocha && istanbul-coveralls"
   },
   "repository": {
     "type": "git",
@@ -42,6 +41,8 @@
     "eslint-plugin-react": "^6.3.0",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "mockery": "^1.7.0",
+    "sinon": "^1.17.6"
   }
 }
