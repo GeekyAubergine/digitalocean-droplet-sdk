@@ -4,7 +4,7 @@ test:
 .PHONY: test
 
 lint:
-	./node_modules/.bin/eslint ./**/*.js
+	./node_modules/.bin/eslint ./*.js ./**/*.js
 
 coverage:
 	./node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha
