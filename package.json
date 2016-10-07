@@ -6,7 +6,6 @@
   "scripts": {
     "test": "make test",
     "test-coverage": "istanbul cover node_modules/mocha/bin/_mocha && istanbul-coveralls",
-    "show-coverage": "istanbul cover node_modules/mocha/bin/_mocha && open coverage/lcov-report/index.html"
   },
   "repository": {
     "type": "git",
