@@ -35,22 +35,23 @@ dropletSDK.getPrivateIP4Addresses().then(function(ipAddresses) {
 ```
 
 ### All available methods
-| Function | Description |
-| --- | --- |
-| getMetadata() | Returns all the metadata for the droplet [see the DigitalOcean guides for more](https://developers.digitalocean.com/documentation/metadata/)
-| getHostName() | Returns the hostname/name of the droplet |
-| getName() | Returns the hostname/name of the droplet |
-| getPublicKeys | List of public ssh keys that have been added to the droplet |
-| getRegion() | Returns the region of the droplet |
-| getInterfaces() | Returns both the public and private interfaces for the droplet. This is in the form of an object with two values; 'public' and 'private' which in turn contain arrays of respective interfaces (see format below) |
-| getPrivateInterfaces() | Returns an array of the private interfaces for the droplet (see format below) |
-| getPrivateIP4Addresses() | Returns an array of the private ipv4 addresses as strings |
-| getPrivateIP6Addresses() | Returns an array of the private ipv6 addresses as strings |
-| getPublicInterfaces() | Returns an array of the public interfaces for the droplet (see format below) |
-| getPublicIP4Addresses() | Returns an array of the public ipv4 addresses as strings |
-| getPublicIP6Addresses() | Returns an array of the public ipv6 addresses as strings |
-| hasFloatingIP() | Returns whether or not the droplet has a floating ip |
-| getFloatingIP() | Returns a string representation of the droplet floating ip if it has one, if it does not it will return a string of length 0 |
+| Function | Description | Type |
+| --- | --- | --- |
+| getMetadata() | Returns all the metadata for the droplet [see the DigitalOcean guides for more](https://developers.digitalocean.com/documentation/metadata/) | JSON |
+| getID() | Returns the id of the droplet | Number
+| getHostName() | Returns the hostname/name of the droplet | String |
+| getName() | Returns the hostname/name of the droplet | String |
+| getPublicKeys | List of public ssh keys that have been added to the droplet | ```Array<String>``` |
+| getRegion() | Returns the region of the droplet | String |
+| getInterfaces() | Returns both the public and private interfaces for the droplet. This is in the form of an object with two values; 'public' and 'private' which in turn contain arrays of respective interfaces (see format below) | JSON |
+| getPrivateInterfaces() | Returns an array of the private interfaces for the droplet (see format below) | JSON |
+| getPrivateIP4Addresses() | Returns an array of the private ipv4 addresses as strings | ```Array<String>``` |
+| getPrivateIP6Addresses() | Returns an array of the private ipv6 addresses as strings | ```Array<String>``` |
+| getPublicInterfaces() | Returns an array of the public interfaces for the droplet (see format below) | JSON |
+| getPublicIP4Addresses() | Returns an array of the public ipv4 addresses as strings | ```Array<String>``` |
+| getPublicIP6Addresses() | Returns an array of the public ipv6 addresses as strings | ```Array<String>``` |
+| hasFloatingIP() | Returns whether or not the droplet has a floating ip | Boolean |
+| getFloatingIP() | Returns a string representation of the droplet floating ip if it has one, if it does not it will return a string of length 0 | String |
 If you feel there are any missing methods please create an issue for it on GitHub.
 
 ###### Example Of Interface JSON
