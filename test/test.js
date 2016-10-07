@@ -69,6 +69,7 @@ var exampleDroplet = {
 			'8.8.8.8',
 		],
 	},
+	'tags': ['1', '2'],
 };
 
 describe('#droplet-api-reject', function() {
@@ -185,6 +186,10 @@ describe('#droplet-api-standard', function() {
 
 	it('gets name servers', function() {
 		return dropletSDK.getNameServers().should.eventually.deep.equal(exampleDroplet.dns.nameservers);
+	});
+	
+	it('gets tags', function() {
+		return dropletSDK.getTags().should.eventually.deep.equal(exampleDroplet.tags);
 	});
 });
 
@@ -458,3 +463,59 @@ describe('#droplet-api-with-no-name-servers', function() {
 		return dropletSDK.getNameServers().should.eventually.deep.equal([]);
 	});
 });
+
+describe('#droplet-api-with-null-tags', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		dropletCopy.tags = null;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets tags', function() {
+		return dropletSDK.getTags().should.eventually.deep.equal([]);
+	});
+});
+
+
+describe('#droplet-api-with-no-tags', function() {
+	before(function() {
+		mockery.enable({
+			warnOnReplace: false,
+			warnOnUnregistered: false,
+			useCleanCache: true,
+		});
+
+		const dropletCopy = JSON.parse(JSON.stringify(exampleDroplet));
+		delete dropletCopy.tags;
+		const requestStub = sinon.stub().yields(null, {statusCode: 200}, JSON.stringify(dropletCopy));
+
+		mockery.registerMock('request', requestStub);
+
+		//Reload so get newly mocked request
+		dropletSDK = require('../index');
+	});
+
+	after(function() {
+		mockery.disable();
+	});
+
+	it('gets tags', function() {
+		return dropletSDK.getTags().should.eventually.deep.equal([]);
+	});
+});
+

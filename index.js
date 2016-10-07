@@ -172,6 +172,12 @@ var getNameServers = function() {
 	});
 };
 
+var getTags = function() {
+	return defaultPromise(function(data) {
+		return data.tags || [];
+	});
+};
+
 module.exports = {
 	getMetadata: getMetadata,
 	getID: getID,
@@ -194,4 +200,5 @@ module.exports = {
 	getFloatingIP: getFloatingIP,
 	getDNS: getNameServers,
 	getNameServers: getNameServers,
+	getTags: getTags,
 };
