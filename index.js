@@ -53,6 +53,12 @@ var getRegion = function() {
 	});
 };
 
+var getAuthKey = function() {
+	return defaultPromise(function(data) {
+		return data.auth_key || '';
+	});
+};
+
 var getInterfaces = function() {
 	return defaultPromise(function(data) {
 		return data.interfaces;
