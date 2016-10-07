@@ -35,7 +35,7 @@ var exampleDroplet = {
 					'cidr':64,
 					'gateway':'2604:A880:0800:0010:0000:0000:0000:0001',
 				},
-				'mac':'04:01:2a:0f:2a:02',
+				'mac':'04:01:2a:0f:2a:08',
 				'type':'private',
 			},
 		],
@@ -150,6 +150,11 @@ describe('#droplet-api-standard', function() {
 		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[1].ipv6.ip_address]);
 	});
 
+	it('gets private mac address', function() {
+		return dropletSDK.getPrivateMacAddresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[0].mac,
+			exampleDroplet.interfaces.private[1].mac]);
+	});
+
 	it('gets public interfaces', function() {
 		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal(exampleDroplet.interfaces.public);
 	});
@@ -160,6 +165,10 @@ describe('#droplet-api-standard', function() {
 
 	it('gets public IP6 address', function() {
 		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.public[0].ipv6.ip_address]);
+	});
+
+	it('gets public mac address', function() {
+		return dropletSDK.getPublicMacAddresses().should.eventually.deep.equal([exampleDroplet.interfaces.public[0].mac]);
 	});
 
 	it('determines if has floating ip', function() {
@@ -269,6 +278,10 @@ describe('#droplet-api-with-no-private-interfaces', function() {
 		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([]);
 	});
 
+	it('gets private mac address', function() {
+		return dropletSDK.getPrivateMacAddresses().should.eventually.deep.equal([]);
+	});
+
 	it('gets public interfaces', function() {
 		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal(dropletCopy.interfaces.public);
 	});
@@ -279,6 +292,10 @@ describe('#droplet-api-with-no-private-interfaces', function() {
 
 	it('gets public IP6 address', function() {
 		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([dropletCopy.interfaces.public[0].ipv6.ip_address]);
+	});
+
+	it('gets public mac address', function() {
+		return dropletSDK.getPublicMacAddresses().should.eventually.deep.equal([exampleDroplet.interfaces.public[0].mac]);
 	});
 });
 
@@ -323,6 +340,11 @@ describe('#droplet-api-with-no-public-interfaces', function() {
 		return dropletSDK.getPrivateIP6Addresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[1].ipv6.ip_address]);
 	});
 
+	it('gets private mac address', function() {
+		return dropletSDK.getPrivateMacAddresses().should.eventually.deep.equal([exampleDroplet.interfaces.private[0].mac,
+			exampleDroplet.interfaces.private[1].mac]);
+	});
+
 	it('gets public interfaces', function() {
 		return dropletSDK.getPublicInterfaces().should.eventually.deep.equal([]);
 	});
@@ -333,6 +355,10 @@ describe('#droplet-api-with-no-public-interfaces', function() {
 
 	it('gets public IP6 address', function() {
 		return dropletSDK.getPublicIP6Addresses().should.eventually.deep.equal([]);
+	});
+
+	it('gets public mac address', function() {
+		return dropletSDK.getPublicMacAddresses().should.eventually.deep.equal([]);
 	});
 });
 

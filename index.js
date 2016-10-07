@@ -97,6 +97,17 @@ var getPrivateIP6Addresses = function() {
 	});
 };
 
+var getPrivateMacAddresses = function() {
+	return defaultPromise(function(data) {
+		if (!data.interfaces.private) {
+			return [];
+		}
+		return data.interfaces.private.map(function(x) {
+			return x.mac;
+		});
+	});
+};
+
 var getPublicInterfaces = function() {
 	return defaultPromise(function(data) {
 		return data.interfaces.public || [];
@@ -129,6 +140,17 @@ var getPublicIP6Addresses = function() {
 	});
 };
 
+var getPublicMacAddresses = function() {
+	return defaultPromise(function(data) {
+		if (!data.interfaces.public) {
+			return [];
+		}
+		return data.interfaces.public.map(function(x) {
+			return x.mac;
+		});
+	});
+};
+
 var hasFloatingIP = function() {
 	return defaultPromise(function(data) {
 		return data.floating_ip.ipv4.active;
@@ -154,9 +176,11 @@ module.exports = {
 	getPrivateInterfaces: getPrivateInterfaces,
 	getPrivateIP4Addresses: getPrivateIP4Addresses,
 	getPrivateIP6Addresses: getPrivateIP6Addresses,
+	getPrivateMacAddresses: getPrivateMacAddresses,
 	getPublicInterfaces: getPublicInterfaces,
 	getPublicIP4Addresses: getPublicIP4Addresses,
 	getPublicIP6Addresses: getPublicIP6Addresses,
+	getPublicMacAddresses: getPublicMacAddresses,
 	hasFloatingIP: hasFloatingIP,
 	getFloatingIP: getFloatingIP
 };
