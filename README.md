@@ -38,7 +38,9 @@ dropletSDK.getPrivateIP4Addresses().then(function(ipAddresses) {
 | Function | Description | Type |
 | --- | --- | --- |
 | getMetadata() | Returns all the metadata for the droplet [see the DigitalOcean guides for more](https://developers.digitalocean.com/documentation/metadata/) | JSON |
-| getID() | Returns the id of the droplet | Number
+| getID() | Returns the id of the droplet | Number |
+| getVendorData() | Returns the vendor data about the droplet | String |
+| getAuthKey() | Returns the Auth Key | String |
 | getHostName() | Returns the hostname/name of the droplet | String |
 | getName() | Returns the hostname/name of the droplet | String |
 | getPublicKeys | List of public ssh keys that have been added to the droplet | ```Array<String>``` |
@@ -47,11 +49,16 @@ dropletSDK.getPrivateIP4Addresses().then(function(ipAddresses) {
 | getPrivateInterfaces() | Returns an array of the private interfaces for the droplet (see format below) | JSON |
 | getPrivateIP4Addresses() | Returns an array of the private ipv4 addresses as strings | ```Array<String>``` |
 | getPrivateIP6Addresses() | Returns an array of the private ipv6 addresses as strings | ```Array<String>``` |
+| getPrivateMacAddresses() | Returns an array of the private MAC addresses as strings | ```Array<String>``` |
 | getPublicInterfaces() | Returns an array of the public interfaces for the droplet (see format below) | JSON |
 | getPublicIP4Addresses() | Returns an array of the public ipv4 addresses as strings | ```Array<String>``` |
 | getPublicIP6Addresses() | Returns an array of the public ipv6 addresses as strings | ```Array<String>``` |
+| getPublicMacAddresses() | Returns an array of the public MAC addresses as strings | ```Array<String>``` |
 | hasFloatingIP() | Returns whether or not the droplet has a floating ip | Boolean |
 | getFloatingIP() | Returns a string representation of the droplet floating ip if it has one, if it does not it will return a string of length 0 | String |
+| getDNS() | Returns an array of strings of the name servers for this droplet | ```Array<String>``` |
+| getNameServers() | Returns an array of strings of the name servers for this droplet | ```Array<String>``` |
+| getTags() | Returns an array of strings of the tags for this droplet | ```Array<String>``` |
 If you feel there are any missing methods please create an issue for it on GitHub.
 
 ###### Example Of Interface JSON
