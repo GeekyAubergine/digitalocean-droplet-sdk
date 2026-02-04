@@ -1,3 +1,7 @@
+This package is unmaintained
+
+---
+
 # DigitalOcean-Droplet-SDK
 
 [![Build Status](https://travis-ci.org/GeekyAubergine/digitalocean-droplet-sdk.svg?branch=develop)](https://travis-ci.org/GeekyAubergine/digitalocean-droplet-sdk)
